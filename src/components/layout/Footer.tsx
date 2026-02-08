@@ -10,11 +10,11 @@ export function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center">
-                <span className="text-brown-900 font-display font-bold text-xl">م</span>
+                <span className="text-brown-900 font-display font-bold text-xl">N</span>
               </div>
               <div>
-                <h3 className="font-display text-xl font-bold text-gold-300">Masjid Al-Ikhlas</h3>
-                <p className="text-sm text-brown-300">Pusat Ibadah & Dakwah</p>
+                <h3 className="font-display text-xl font-bold text-gold-300">Masjid Nuruzzaman</h3>
+                <p className="text-sm text-brown-300">Masjid Kampus B Unair</p>
               </div>
             </div>
             <p className="text-brown-300 leading-relaxed max-w-md font-display text-lg italic mt-6">
@@ -29,7 +29,7 @@ export function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-gold-400 mt-0.5 shrink-0" />
                 <span className="text-brown-300 text-sm">
-                  Jl. Masjid No. 123, Kelurahan Contoh, Kota Contoh 12345
+                  Kampus B, Universitas Airlangga, Jl. Airlangga Selatan No.4-6, Gubeng, Surabaya, East Java 60286
                 </span>
               </li>
               <li className="flex items-center gap-3">
@@ -91,7 +91,7 @@ export function Footer() {
       <div className="border-t border-brown-700">
         <div className="container mx-auto px-4 py-6">
           <p className="text-center text-brown-400 text-sm">
-            © 2026 Masjid Al-Ikhlas. Semua hak dilindungi.
+            © 2026 Masjid Nuruzzaman. Semua hak dilindungi.
           </p>
         </div>
       </div>
