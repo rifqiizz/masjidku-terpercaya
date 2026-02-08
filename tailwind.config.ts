@@ -17,8 +17,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Amiri", "serif"],
-        body: ["Inter", "sans-serif"],
+        display: ["Plus Jakarta Sans", "sans-serif"],
+        body: ["Plus Jakarta Sans", "sans-serif"],
+        mono: ["JetBrains Mono", "monospace"],
       },
       colors: {
         border: "hsl(var(--border))",

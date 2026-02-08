@@ -1,17 +1,34 @@
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Calendar, BookOpen, FileText } from "lucide-react";
-import heroImage from "@/assets/hero-mosque.jpg";
+import heroImage1 from "@/assets/hero-nuruzzaman-1.jpg";
+import heroImage2 from "@/assets/hero-nuruzzaman-2.jpg";
+import { useState, useEffect } from "react";
 
 export function HeroSection() {
+  const [currentImage, setCurrentImage] = useState(0);
+  const images = [heroImage1, heroImage2];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section id="beranda" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
+      {/* Background Images with Crossfade */}
       <div className="absolute inset-0">
-        <img
-          src={heroImage}
-          alt="Interior Masjid"
-          className="w-full h-full object-cover"
-        />
+        {images.map((img, index) => (
+          <img
+            key={index}
+            src={img}
+            alt="Masjid Nuruzzaman"
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+              index === currentImage ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        ))}
         <div className="absolute inset-0 bg-gradient-to-b from-brown-900/80 via-brown-800/70 to-brown-900/90" />
       </div>
 
