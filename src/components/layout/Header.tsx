@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const navLinks = [
   { href: "#beranda", label: "Beranda" },
@@ -13,13 +14,28 @@ const navLinks = [
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 100);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-md border-b border-white/10">
+    <header 
+      className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b transition-all duration-300 ${
+        isScrolled 
+          ? "bg-brown-900/95 border-brown-700/50" 
+          : "bg-transparent border-white/10"
+      }`}
+    >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <a href="#beranda" className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-3">
             <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center">
               <span className="text-brown-900 font-display font-bold text-lg md:text-xl">N</span>
             </div>
@@ -27,7 +43,7 @@ export function Header() {
               <h1 className="font-display text-lg md:text-xl font-bold text-white drop-shadow-sm">Masjid Nuruzzaman</h1>
               <p className="text-xs text-white/80">Masjid Kampus B Unair</p>
             </div>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">
@@ -44,8 +60,8 @@ export function Header() {
 
           {/* CTA Button */}
           <div className="hidden md:flex items-center gap-3">
-            <Button variant="soft" size="sm">
-              Ikuti Kajian
+            <Button variant="soft" size="sm" asChild>
+              <Link to="/ketakmiran">Ketakmiran</Link>
             </Button>
           </div>
 
@@ -62,21 +78,21 @@ export function Header() {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="lg:hidden bg-background border-t border-border">
+        <div className="lg:hidden bg-brown-900/95 border-t border-brown-700/50">
           <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsMenuOpen(false)}
-                className="px-4 py-3 text-base font-medium text-foreground hover:bg-muted rounded-lg transition-colors"
+                className="px-4 py-3 text-base font-medium text-white/90 hover:bg-white/10 rounded-lg transition-colors"
               >
                 {link.label}
               </a>
             ))}
-            <div className="pt-4 border-t border-border mt-2">
-              <Button variant="cta" className="w-full">
-                Ikuti Kajian
+            <div className="pt-4 border-t border-brown-700/50 mt-2">
+              <Button variant="gold" className="w-full" asChild>
+                <Link to="/ketakmiran" onClick={() => setIsMenuOpen(false)}>Ketakmiran</Link>
               </Button>
             </div>
           </nav>
