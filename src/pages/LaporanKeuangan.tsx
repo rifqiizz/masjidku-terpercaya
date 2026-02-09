@@ -25,7 +25,9 @@ import {
   Wallet,
   Download,
   FileText,
-  Shield
+  Shield,
+  ArrowUpCircle,
+  ArrowDownCircle
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -44,6 +46,26 @@ const months = [
   { value: "11", label: "November" },
   { value: "12", label: "Desember" },
 ];
+
+// Calculate opening balance based on year and month
+const getOpeningBalance = (year: string, month: string) => {
+  const yearNum = parseInt(year);
+  const monthNum = parseInt(month);
+  
+  // Base opening balance varies by year
+  let baseBalance = yearNum === 2026 ? 125000000 : yearNum === 2025 ? 100000000 : 75000000;
+  
+  // Add cumulative surplus for previous months in the same year
+  for (let m = 1; m < monthNum; m++) {
+    const monthMultiplier = m <= 6 ? 1.0 : 1.15;
+    const baseMultiplier = yearNum === 2026 ? 1.1 : yearNum === 2025 ? 1.0 : 0.9;
+    const monthlyIncome = Math.round(46500000 * baseMultiplier * monthMultiplier);
+    const monthlyExpense = Math.round(37700000 * baseMultiplier);
+    baseBalance += (monthlyIncome - monthlyExpense);
+  }
+  
+  return baseBalance;
+};
 
 // Dummy financial data generator
 const generateFinancialData = (year: string, month: string) => {
@@ -74,7 +96,9 @@ const generateFinancialData = (year: string, month: string) => {
     { kategori: "Perbaikan & Renovasi", jumlah: Math.round(3800000 * baseMultiplier) },
   ];
 
-  return { income, expenses };
+  const openingBalance = getOpeningBalance(year, month);
+
+  return { income, expenses, openingBalance };
 };
 
 const formatCurrency = (amount: number) => {
@@ -90,11 +114,12 @@ export default function LaporanKeuangan() {
   const [selectedYear, setSelectedYear] = useState("2026");
   const [selectedMonth, setSelectedMonth] = useState("01");
 
-  const { income, expenses } = generateFinancialData(selectedYear, selectedMonth);
+  const { income, expenses, openingBalance } = generateFinancialData(selectedYear, selectedMonth);
   
   const totalIncome = income.reduce((sum, item) => sum + item.jumlah, 0);
   const totalExpenses = expenses.reduce((sum, item) => sum + item.jumlah, 0);
   const balance = totalIncome - totalExpenses;
+  const closingBalance = openingBalance + balance;
 
   const selectedMonthLabel = months.find(m => m.value === selectedMonth)?.label;
 
@@ -165,12 +190,49 @@ export default function LaporanKeuangan() {
               </CardContent>
             </Card>
 
+            {/* Balance Cards - Opening & Closing */}
+            <div className="grid sm:grid-cols-2 gap-4 mb-6">
+              <Card className="border-l-4 border-l-primary">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <ArrowUpCircle className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Saldo Awal</p>
+                      <p className="text-xs text-muted-foreground/70">1 {selectedMonthLabel} {selectedYear}</p>
+                    </div>
+                  </div>
+                  <p className="font-mono text-2xl font-bold text-primary">
+                    {formatCurrency(openingBalance)}
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-gold-500">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg bg-gold-50 flex items-center justify-center">
+                      <ArrowDownCircle className="w-5 h-5 text-gold-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Saldo Akhir</p>
+                      <p className="text-xs text-muted-foreground/70">Akhir {selectedMonthLabel} {selectedYear}</p>
+                    </div>
+                  </div>
+                  <p className="font-mono text-2xl font-bold text-gold-600">
+                    {formatCurrency(closingBalance)}
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
             {/* Summary Cards */}
             <div className="grid sm:grid-cols-3 gap-4 mb-8">
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
                       <TrendingUp className="w-5 h-5 text-green-600" />
                     </div>
                     <div>
@@ -187,7 +249,7 @@ export default function LaporanKeuangan() {
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center">
                       <TrendingDown className="w-5 h-5 text-red-600" />
                     </div>
                     <div>
@@ -204,16 +266,16 @@ export default function LaporanKeuangan() {
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-lg bg-gold-50 flex items-center justify-center">
-                      <Wallet className="w-5 h-5 text-gold-600" />
+                    <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                      <Wallet className="w-5 h-5 text-blue-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground">Saldo Bulan Ini</p>
+                      <p className="text-sm text-muted-foreground">Surplus/Defisit</p>
                       <p className="text-xs text-muted-foreground/70">{selectedMonthLabel} {selectedYear}</p>
                     </div>
                   </div>
-                  <p className={`font-mono text-2xl font-bold ${balance >= 0 ? "text-gold-600" : "text-red-600"}`}>
-                    {formatCurrency(balance)}
+                  <p className={`font-mono text-2xl font-bold ${balance >= 0 ? "text-green-600" : "text-red-600"}`}>
+                    {balance >= 0 ? "+" : ""}{formatCurrency(balance)}
                   </p>
                 </CardContent>
               </Card>
