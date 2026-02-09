@@ -8,6 +8,7 @@ const navLinks = [
   { href: "#kajian", label: "Kajian" },
   { href: "#artikel", label: "Artikel" },
   { href: "#fasilitas", label: "Fasilitas" },
+  { href: "/permohonan-ruangan", label: "Reservasi", isRoute: true },
   { href: "#laporan", label: "Laporan Keuangan" },
 ];
 
@@ -47,13 +48,23 @@ export function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="px-4 py-2 text-sm font-medium text-white/80 hover:text-white transition-colors rounded-lg hover:bg-white/10"
-              >
-                {link.label}
-              </a>
+              link.isRoute ? (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className="px-4 py-2 text-sm font-medium text-white/80 hover:text-white transition-colors rounded-lg hover:bg-white/10"
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="px-4 py-2 text-sm font-medium text-white/80 hover:text-white transition-colors rounded-lg hover:bg-white/10"
+                >
+                  {link.label}
+                </a>
+              )
             ))}
           </nav>
 
@@ -80,14 +91,25 @@ export function Header() {
         <div className="lg:hidden bg-brown-900/95 border-t border-brown-700/50">
           <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
             {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setIsMenuOpen(false)}
-                className="px-4 py-3 text-base font-medium text-white/90 hover:bg-white/10 rounded-lg transition-colors"
-              >
-                {link.label}
-              </a>
+              link.isRoute ? (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="px-4 py-3 text-base font-medium text-white/90 hover:bg-white/10 rounded-lg transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="px-4 py-3 text-base font-medium text-white/90 hover:bg-white/10 rounded-lg transition-colors"
+                >
+                  {link.label}
+                </a>
+              )
             ))}
             <div className="pt-4 border-t border-brown-700/50 mt-2">
               <Button variant="gold" className="w-full" asChild>
