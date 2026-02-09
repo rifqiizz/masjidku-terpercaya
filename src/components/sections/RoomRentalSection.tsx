@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Building2, Users, GraduationCap, Heart, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const roomTypes = [
   {
@@ -47,9 +48,11 @@ export function RoomRentalSection() {
                 </p>
               </div>
 
-              <Button variant="cta" size="lg">
-                Ajukan Permohonan Pemakaian Ruangan
-                <ArrowRight className="w-5 h-5" />
+              <Button variant="cta" size="lg" asChild>
+                <Link to="/permohonan-ruangan">
+                  Ajukan Permohonan Pemakaian Ruangan
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
               </Button>
             </div>
 
