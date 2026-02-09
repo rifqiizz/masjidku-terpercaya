@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { FileText, TrendingUp, TrendingDown, ArrowRight, Shield } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const financeHighlights = [
   {
@@ -76,10 +77,12 @@ export function FinanceSection() {
 
           {/* CTA */}
           <div className="text-center">
-            <Button variant="gold" size="lg">
-              <FileText className="w-5 h-5" />
-              Lihat Laporan Keuangan Lengkap
-              <ArrowRight className="w-5 h-5" />
+            <Button variant="gold" size="lg" asChild>
+              <Link to="/laporan-keuangan">
+                <FileText className="w-5 h-5" />
+                Lihat Laporan Keuangan Lengkap
+                <ArrowRight className="w-5 h-5" />
+              </Link>
             </Button>
           </div>
         </div>
