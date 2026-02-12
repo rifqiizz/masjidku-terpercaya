@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Calendar } from "@/components/ui/calendar";
@@ -8,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { 
   Heart, 
@@ -24,7 +26,8 @@ import {
   CreditCard,
   Building2,
   Copy,
-  Check
+  Check,
+  HelpCircle
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -111,6 +114,7 @@ const stepLabels = [
 ];
 
 export default function PermohonanRuangan() {
+  const navigate = useNavigate();
   const [selectedPurpose, setSelectedPurpose] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [formData, setFormData] = useState({
@@ -146,10 +150,16 @@ export default function PermohonanRuangan() {
   };
 
   const handleSubmit = () => {
-    toast({
-      title: "Permohonan Berhasil Dikirim",
-      description: "Silakan lakukan pembayaran dan konfirmasi ke pengurus masjid.",
+    const params = new URLSearchParams({
+      id: `NZM-2026-${String(selectedDate?.getMonth()! + 1).padStart(2, "0")}${String(selectedDate?.getDate()).padStart(2, "0")}-${String(Math.floor(Math.random() * 999) + 1).padStart(3, "0")}`,
+      kegiatan: purposeOptions.find((p) => p.id === selectedPurpose)?.title || "",
+      tanggal: selectedDate?.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) || "",
+      nama: formData.nama,
+      peserta: formData.peserta,
+      email: formData.email || "-",
+      kontribusi: new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(getContributionAmount()),
     });
+    navigate(`/konfirmasi-reservasi?${params.toString()}`);
   };
 
   const handleCopyAccount = (accountNumber: string) => {
@@ -767,6 +777,76 @@ export default function PermohonanRuangan() {
                 </Card>
               </div>
             )}
+
+            {/* FAQ Section */}
+            <div className="mt-16 pt-12 border-t border-border">
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full mb-4">
+                  <HelpCircle className="w-4 h-4 text-primary" />
+                  <span className="text-primary text-sm font-medium">FAQ</span>
+                </div>
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
+                  Pertanyaan yang Sering Diajukan
+                </h2>
+                <p className="text-muted-foreground">Informasi seputar reservasi ruangan Masjid Nuruzzaman</p>
+              </div>
+
+              <Accordion type="single" collapsible className="w-full space-y-2">
+                <AccordionItem value="item-1" className="border rounded-lg px-4">
+                  <AccordionTrigger className="text-left font-medium">
+                    Apa saja jenis kegiatan yang bisa menggunakan ruangan masjid?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    Ruangan masjid dapat digunakan untuk kegiatan yang bersifat keagamaan dan bermanfaat, seperti Akad Nikah, Resepsi Nikah, Seminar keagamaan/akademik, Pelatihan, Pengajian, dan Manasik Haji/Umroh. Setiap permohonan akan ditinjau oleh pengurus masjid.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-2" className="border rounded-lg px-4">
+                  <AccordionTrigger className="text-left font-medium">
+                    Berapa biaya kontribusi untuk penggunaan ruangan?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    Biaya kontribusi bervariasi tergantung jenis kegiatan: Pengajian (Rp300.000), Akad Nikah & Pelatihan (Rp500.000), Seminar (Rp750.000), Manasik Haji/Umroh (Rp1.000.000), dan Resepsi Nikah (Rp1.500.000). Kontribusi ini merupakan infaq untuk operasional masjid.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-3" className="border rounded-lg px-4">
+                  <AccordionTrigger className="text-left font-medium">
+                    Bagaimana cara melakukan pembayaran?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    Pembayaran dilakukan secara transfer manual ke salah satu rekening masjid (BSI, Mandiri, atau BCA). Setelah transfer, simpan bukti pembayaran dan konfirmasikan ke pengurus masjid melalui WhatsApp. Verifikasi membutuhkan waktu maksimal 2x24 jam.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-4" className="border rounded-lg px-4">
+                  <AccordionTrigger className="text-left font-medium">
+                    Apakah reservasi bisa dibatalkan?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    Reservasi dapat dibatalkan dengan menghubungi pengurus masjid. Namun, kontribusi infaq yang sudah dibayarkan tidak dapat dikembalikan jika pembatalan berasal dari pihak pemohon. Masjid berhak membatalkan reservasi jika ada kegiatan masjid yang bersifat mendesak.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-5" className="border rounded-lg px-4">
+                  <AccordionTrigger className="text-left font-medium">
+                    Berapa lama proses verifikasi reservasi?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    Proses verifikasi pembayaran membutuhkan waktu maksimal 2x24 jam setelah bukti transfer diterima. Anda akan menerima notifikasi melalui email yang terdaftar. Jika dalam waktu tersebut belum ada konfirmasi, silakan hubungi admin masjid.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-6" className="border rounded-lg px-4">
+                  <AccordionTrigger className="text-left font-medium">
+                    Bagaimana jika tanggal yang diinginkan sudah terisi?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    Tanggal yang sudah terisi akan ditandai pada kalender dan tidak dapat dipilih. Anda dapat memilih tanggal lain yang tersedia atau menghubungi pengurus masjid untuk konsultasi jadwal alternatif.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </div>
           </div>
         </div>
       </main>
