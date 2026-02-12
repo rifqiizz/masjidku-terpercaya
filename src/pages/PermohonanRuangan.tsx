@@ -129,6 +129,8 @@ export default function PermohonanRuangan() {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [selectedBank, setSelectedBank] = useState<string | null>(null);
   const [copiedAccount, setCopiedAccount] = useState<string | null>(null);
+  const [checkBookingId, setCheckBookingId] = useState("");
+  const [checkPhone, setCheckPhone] = useState("");
   const { toast } = useToast();
 
   const isDateBooked = (date: Date) => {
@@ -778,8 +780,58 @@ export default function PermohonanRuangan() {
               </div>
             )}
 
-            {/* FAQ Section */}
+            {/* Cek Pemesanan Section */}
             <div className="mt-16 pt-12 border-t border-border">
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full mb-4">
+                  <FileCheck className="w-4 h-4 text-primary" />
+                  <span className="text-primary text-sm font-medium">Cek Status</span>
+                </div>
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
+                  Cek Status Pemesanan
+                </h2>
+                <p className="text-muted-foreground">Masukkan kode booking dan nomor telepon untuk melihat status reservasi Anda</p>
+              </div>
+
+              <Card className="p-6 md:p-8 max-w-lg mx-auto mb-16">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="cek-booking">Kode Booking</Label>
+                    <Input
+                      id="cek-booking"
+                      placeholder="Contoh: NZM-2026-0214-001"
+                      value={checkBookingId}
+                      onChange={(e) => setCheckBookingId(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="cek-telepon">Nomor Telepon</Label>
+                    <Input
+                      id="cek-telepon"
+                      type="tel"
+                      placeholder="08xxxxxxxxxx"
+                      value={checkPhone}
+                      onChange={(e) => setCheckPhone(e.target.value)}
+                    />
+                  </div>
+                  <Button
+                    variant="cta"
+                    className="w-full"
+                    disabled={!checkBookingId || !checkPhone}
+                    onClick={() => {
+                      const params = new URLSearchParams({ id: checkBookingId });
+                      navigate(`/status-reservasi?${params.toString()}`);
+                    }}
+                  >
+                    <CheckCircle2 className="w-4 h-4" />
+                    Cek Status Reservasi
+                  </Button>
+                </div>
+              </Card>
+            </div>
+
+            {/* FAQ Section */}
+            <div className="pt-12 border-t border-border">
               <div className="text-center mb-8">
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full mb-4">
                   <HelpCircle className="w-4 h-4 text-primary" />

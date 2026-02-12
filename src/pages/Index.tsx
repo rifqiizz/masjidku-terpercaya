@@ -2,6 +2,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { MomentumSection } from "@/components/sections/MomentumSection";
+import { BeritaSection } from "@/components/sections/BeritaSection";
 import { ActivitiesSection } from "@/components/sections/ActivitiesSection";
 import { KajianSection } from "@/components/sections/KajianSection";
 import { ArticlesSection } from "@/components/sections/ArticlesSection";
@@ -16,6 +17,7 @@ const Index = () => {
       <main>
         <HeroSection />
         <MomentumSection />
+        <BeritaSection />
         <ActivitiesSection />
         <KajianSection />
         <ArticlesSection />
