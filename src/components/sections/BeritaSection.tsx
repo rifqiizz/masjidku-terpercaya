@@ -42,6 +42,24 @@ const newsItems = [
     image: heroNuruzzaman2,
     featured: false,
   },
+  {
+    id: 5,
+    title: "Pelatihan Pengurusan Jenazah",
+    category: "Pengumuman",
+    date: "28 Jan 2026",
+    excerpt: "Pendaftaran pelatihan manasik haji dan umroh gelombang pertama telah dibuka.",
+    image: heroNuruzzaman1,
+    featured: false,
+  },
+  {
+    id: 6,
+    title: "Lowongan Infaq Pavingisasi Parkir",
+    category: "Pengumuman",
+    date: "28 Jan 2026",
+    excerpt: "Pendaftaran pelatihan manasik haji dan umroh gelombang pertama telah dibuka.",
+    image: mosqueMinaret,
+    featured: false,
+  },
 ];
 
 export function BeritaSection() {
