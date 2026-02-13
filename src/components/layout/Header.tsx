@@ -9,7 +9,7 @@ const navLinks = [
   { href: "#kajian", label: "Kajian" },
   { href: "#artikel", label: "Artikel" },
   { href: "#fasilitas", label: "Fasilitas" },
-  { href: "/permohonan-ruangan", label: "Reservasi", isRoute: true },
+  //{ href: "/permohonan-ruangan", label: "Reservasi", isRoute: true },
   { href: "#laporan", label: "Laporan Keuangan" },
 ];
 
@@ -73,6 +73,9 @@ export function Header() {
 
           {/* CTA Button */}
           <div className="hidden md:flex items-center gap-3">
+            <Button variant="secondary" size="sm" asChild>
+              <Link to="/permohonan-ruangan">Reservasi</Link>
+            </Button>
             <Button variant="default" size="sm" asChild>
               <Link to="/ketakmiran">Ketakmiran</Link>
             </Button>
@@ -115,6 +118,12 @@ export function Header() {
               )
             ))}
             <div className="pt-4 border-t border-border/50 mt-2">
+              <Button variant="secondary" className="w-full" asChild>
+                <Link to="/permohonan-ruangan" onClick={() => setIsMenuOpen(false)}>Reservasi</Link>
+              </Button>
+              
+            </div>
+            <div className="">
               <Button variant="default" className="w-full" asChild>
                 <Link to="/ketakmiran" onClick={() => setIsMenuOpen(false)}>Ketakmiran</Link>
               </Button>
