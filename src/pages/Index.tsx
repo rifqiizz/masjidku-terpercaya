@@ -3,6 +3,7 @@ import { Footer } from "@/components/layout/Footer";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { MomentumSection } from "@/components/sections/MomentumSection";
 import { BeritaSection } from "@/components/sections/BeritaSection";
+import { InstagramFeedSection } from "@/components/sections/InstagramFeedSection";
 import { ActivitiesSection } from "@/components/sections/ActivitiesSection";
 import { KajianSection } from "@/components/sections/KajianSection";
 import { ArticlesSection } from "@/components/sections/ArticlesSection";
@@ -18,6 +19,7 @@ const Index = () => {
         <HeroSection />
         <MomentumSection />
         <BeritaSection />
+        <InstagramFeedSection />
         <ActivitiesSection />
         <KajianSection />
         <ArticlesSection />

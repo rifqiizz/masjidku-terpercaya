@@ -4,12 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import logoNuruzzaman from "@/assets/logo_nuruzzaman.png";
 
-const navLinks = [
+const navLinks: { href: string; label: string; isRoute?: boolean }[] = [
   { href: "#kegiatan", label: "Kegiatan" },
   { href: "#kajian", label: "Kajian" },
   { href: "#artikel", label: "Artikel" },
   { href: "#fasilitas", label: "Fasilitas" },
-  //{ href: "/permohonan-ruangan", label: "Reservasi", isRoute: true },
   { href: "#laporan", label: "Laporan Keuangan" },
 ];
 
